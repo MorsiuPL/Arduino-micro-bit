@@ -1,187 +1,24 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <title>Projekty Arduino & micro:bit</title>
-    <style>
-        body { font-family: Arial; max-width: 800px; margin: auto; padding: 20px; }
-        header { text-align: center; font-size: 32px; margin-bottom: 20px; }
-
-        #posts {
-            max-height: 80vh;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .post {
-            border: 1px solid #ccc;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 8px;
-        }
-
-        .post img {
-            max-width: 100%;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .date {
-            color: gray;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        #search {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            font-size: 16px;
-        }
-
-        #sort {
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        .content-short {
-            max-height: 120px;
-            overflow: hidden;
-        }
-
-        .expand-btn {
-            margin-top: 10px;
-            cursor: pointer;
-            color: #007bff;
-            font-weight: bold;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Moje najnowsze filmy</title>
+<style>
+    body { font-family: Arial; text-align: center; padding: 20px; background: #f0f0f0; }
+    h1 { color: #0033cc; }
+    iframe { margin: 10px; width: 560px; height: 315px; border: none; }
+    footer { margin-top: 30px; font-size: 14px; color: #555555; }
+</style>
 </head>
 <body>
+<h1>Najnowsze filmy @kulig477</h1>
+<iframe src="https://www.youtube.com/embed?listType=user_uploads&list=kulig477" allowfullscreen></iframe>
 
-<header>Projekty Arduino & micro:bit</header>
+<h1>Najnowsze filmy @kulig477lives</h1>
+<iframe src="https://www.youtube.com/embed?listType=user_uploads&list=kulig477lives" allowfullscreen></iframe>
 
-<input id="search" placeholder="Szukaj postów...">
-<select id="sort">
-    <option value="newest">Najnowsze</option>
-    <option value="oldest">Najstarsze</option>
-    <option value="az">A–Z</option>
-    <option value="za">Z–A</option>
-</select>
-
-<div id="posts"></div>
-
-<script>
-// =========================
-// FUNKCJA "ILE CZASU TEMU"
-// =========================
-function timeAgo(dateString) {
-    const date = new Date(dateString.replace(" ", "T"));
-    const now = new Date();
-    const diff = now - date;
-
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours   = Math.floor(minutes / 60);
-    const days    = Math.floor(hours / 24);
-    const months  = Math.floor(days / 30);
-    const years   = Math.floor(days / 365);
-
-    if (years > 0)   return `opublikowano ${years} ${years === 1 ? "rok temu" : "lata temu"}`;
-    if (months > 0)  return `opublikowano ${months} miesięcy temu`;
-    if (days > 0)    return `opublikowano ${days} dni temu`;
-    if (hours > 0)   return `opublikowano ${hours} godzin temu`;
-    if (minutes > 0) return `opublikowano ${minutes} minut temu`;
-    return "opublikowano przed chwilą";
-}
-
-let allPosts = [];
-
-// =========================
-// WYŚWIETLANIE POSTÓW
-// =========================
-function renderPosts() {
-    const search = document.getElementById("search").value.toLowerCase();
-    const sort = document.getElementById("sort").value;
-
-    let posts = [...allPosts];
-
-    // FILTROWANIE
-    posts = posts.filter(p =>
-        p.title.toLowerCase().includes(search) ||
-        p.content.toLowerCase().includes(search)
-    );
-
-    // SORTOWANIE
-    if (sort === "newest") posts.sort((a,b) => new Date(b.date) - new Date(a.date));
-    if (sort === "oldest") posts.sort((a,b) => new Date(a.date) - new Date(b.date));
-    if (sort === "az") posts.sort((a,b) => a.title.localeCompare(b.title));
-    if (sort === "za") posts.sort((a,b) => b.title.localeCompare(a.title));
-
-    // RENDEROWANIE
-    document.getElementById("posts").innerHTML = "";
-
-    for (let post of posts) {
-        let linksHTML = "";
-        if (post.links && post.links.length > 0) {
-            linksHTML = "<h4>Linki:</h4><ul>";
-            for (let link of post.links) {
-                linksHTML += `<li><a href="${link}" target="_blank">${link}</a></li>`;
-            }
-            linksHTML += "</ul>";
-        }
-
-        const postId = Math.random().toString(36).substr(2, 9);
-
-        document.getElementById("posts").innerHTML += `
-            <div class="post">
-                <div class="date">${timeAgo(post.date)}</div>
-                <h3>${post.title}</h3>
-
-                <p id="content-${postId}" class="content-short">${post.content}</p>
-                <div class="expand-btn" onclick="toggleContent('${postId}')">Rozwiń</div>
-
-                ${post.image ? `<img src="${post.image}">` : ""}
-                ${linksHTML}
-            </div>
-        `;
-    }
-}
-
-// =========================
-// ROZWIJANIE POSTÓW
-// =========================
-function toggleContent(id) {
-    const el = document.getElementById("content-" + id);
-    const btn = el.nextElementSibling;
-
-    if (el.classList.contains("content-short")) {
-        el.classList.remove("content-short");
-        btn.textContent = "Zwiń";
-    } else {
-        el.classList.add("content-short");
-        btn.textContent = "Rozwiń";
-    }
-}
-
-// =========================
-// WCZYTYWANIE POSTÓW
-// =========================
-async function loadPosts() {
-    const res = await fetch("posts.json");
-    allPosts = await res.json();
-    renderPosts();
-}
-
-loadPosts();
-
-// =========================
-// EVENTY
-// =========================
-document.getElementById("search").addEventListener("input", renderPosts);
-document.getElementById("sort").addEventListener("change", renderPosts);
-</script>
-
+<footer>
+    © 2026 MorsiuPL. Wszelkie prawa zastrzeżone.
+</footer>
 </body>
 </html>
