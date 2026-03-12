@@ -36,11 +36,13 @@ setInterval(function(){
     let zostalo = wakacje - teraz;
 
     if(zostalo <= 0){
+        // Po dojściu do wakacji pokazujemy tylko napis
         document.getElementById("countdown").innerHTML = "🌴 SĄ WAKACJE! 🌞";
         document.getElementById("percent").innerHTML = "";
         return;
     }
 
+    // Liczenie dni, godzin, minut i sekund
     let dni = Math.floor(zostalo / (1000*60*60*24));
     let godziny = Math.floor((zostalo % (1000*60*60*24)) / (1000*60*60));
     let minuty = Math.floor((zostalo % (1000*60*60)) / (1000*60));
@@ -49,10 +51,11 @@ setInterval(function(){
     document.getElementById("countdown").innerHTML =
         dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
 
+    // Dokładny procent do wakacji
     let procent = (zostalo / calosc) * 100;
 
     document.getElementById("percent").innerHTML =
-        "Zostało: " + procent.toFixed(2) + "% roku szkolnego";
+        "Do wakacji: " + procent.toFixed(4) + "%";
 
 },1000);
 </script>
