@@ -2,23 +2,60 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Moje najnowsze filmy</title>
+<title>Odliczanie do wakacji</title>
 <style>
-    body { font-family: Arial; text-align: center; padding: 20px; background: #f0f0f0; }
-    h1 { color: #0033cc; }
-    iframe { margin: 10px; width: 560px; height: 315px; border: none; }
-    footer { margin-top: 30px; font-size: 14px; color: #555555; }
+body{
+    font-family: Arial;
+    text-align:center;
+    margin-top:100px;
+}
+
+#countdown{
+    font-size:50px;
+}
+
+#percent{
+    font-size:35px;
+}
 </style>
 </head>
 <body>
-<h1>Najnowsze filmy @kulig477</h1>
-<iframe src="https://www.youtube.com/embed?listType=user_uploads&list=kulig477" allowfullscreen></iframe>
 
-<h1>Najnowsze filmy @kulig477lives</h1>
-<iframe src="https://www.youtube.com/embed?listType=user_uploads&list=kulig477lives" allowfullscreen></iframe>
+<h1>Odliczanie do wakacji</h1>
 
-<footer>
-    © 2026 MorsiuPL. Wszelkie prawa zastrzeżone.
-</footer>
+<div id="countdown"></div>
+<div id="percent"></div>
+
+<script>
+let start = new Date("September 1, 2025 00:00:00").getTime();
+let wakacje = new Date("June 26, 2026 00:00:00").getTime();
+
+setInterval(function(){
+    let teraz = new Date().getTime();
+    let calosc = wakacje - start;
+    let zostalo = wakacje - teraz;
+
+    if(zostalo <= 0){
+        document.getElementById("countdown").innerHTML = "🌴 SĄ WAKACJE! 🌞";
+        document.getElementById("percent").innerHTML = "";
+        return;
+    }
+
+    let dni = Math.floor(zostalo / (1000*60*60*24));
+    let godziny = Math.floor((zostalo % (1000*60*60*24)) / (1000*60*60));
+    let minuty = Math.floor((zostalo % (1000*60*60)) / (1000*60));
+    let sekundy = Math.floor((zostalo % (1000*60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
+
+    let procent = (zostalo / calosc) * 100;
+
+    document.getElementById("percent").innerHTML =
+        "Zostało: " + procent.toFixed(2) + "% roku szkolnego";
+
+},1000);
+</script>
+
 </body>
 </html>
