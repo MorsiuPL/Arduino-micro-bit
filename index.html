@@ -33,12 +33,28 @@ body{
 
 <br><br>
 
-<input type="date" id="dataKomunii">
+<select id="niedziele"></select>
 
 <div id="countdown"></div>
 <div id="percent"></div>
 
 <script>
+
+// 🔽 generowanie niedziel maja 2026
+let select = document.getElementById("niedziele");
+
+for(let d = 1; d <= 31; d++){
+    let data = new Date(2026, 4, d); // maj = 4
+
+    if(data.getMonth() !== 4) break;
+
+    if(data.getDay() === 0){ // niedziela
+        let opcja = document.createElement("option");
+        opcja.value = data.getTime();
+        opcja.textContent = data.toLocaleDateString("pl-PL");
+        select.appendChild(opcja);
+    }
+}
 
 let start = new Date("September 1, 2025 00:00:00").getTime();
 
@@ -52,15 +68,109 @@ let cel;
 if(tryb === "wakacje"){
     cel = new Date("June 26, 2026 00:00:00").getTime();
 } else {
-    let wybrana = document.getElementById("dataKomunii").value;
+    cel = Number(document.getElementById("niedziele").value);
+}
 
-    if(!wybrana){
-        document.getElementById("countdown").innerHTML = "Wybierz datę komunii";
-        document.getElementById("percent").innerHTML = "";
-        return;
+let calosc = cel - start;
+let zostalo = cel - teraz;
+
+if(zostalo <= 0){
+    document.getElementById("countdown").innerHTML =
+        (tryb === "wakacje") ? "🌴 SĄ WAKACJE! 🌞" : "⛪ KOMUNIA! ✨";
+    document.getElementById("percent").innerHTML = "";
+    return;
+}
+
+let dni = Math.floor(zostalo / (1000*60*60*24));
+let godziny = Math.floor((zostalo % (1000*60*60*24)) / (1000*60*60));
+let minuty = Math.floor((zostalo % (1000*60*60)) / (1000*60));
+let sekundy = Math.floor((zostalo % (1000*60)) / 1000);
+
+document.getElementById("countdown").innerHTML =
+dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
+
+let procent = (zostalo / calosc) * 100;
+
+document.getElementById("percent").innerHTML =
+(tryb === "wakacje" ? "Do wakacji: " : "Do komunii: ") +
+procent.toFixed(4) + "%";
+
+},1000);
+
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Odliczanie</title>
+
+<style>
+body{
+    font-family: Arial;
+    text-align:center;
+    margin-top:100px;
+}
+
+#countdown{
+    font-size:50px;
+}
+
+#percent{
+    font-size:35px;
+    margin-top:10px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>Odliczanie</h1>
+
+<select id="tryb">
+    <option value="wakacje">Wakacje</option>
+    <option value="komunia">Komunia</option>
+</select>
+
+<br><br>
+
+<select id="niedziele"></select>
+
+<div id="countdown"></div>
+<div id="percent"></div>
+
+<script>
+
+// 🔽 generowanie niedziel maja 2026
+let select = document.getElementById("niedziele");
+
+for(let d = 1; d <= 31; d++){
+    let data = new Date(2026, 4, d); // maj = 4
+
+    if(data.getMonth() !== 4) break;
+
+    if(data.getDay() === 0){ // niedziela
+        let opcja = document.createElement("option");
+        opcja.value = data.getTime();
+        opcja.textContent = data.toLocaleDateString("pl-PL");
+        select.appendChild(opcja);
     }
+}
 
-    cel = new Date(wybrana).getTime();
+let start = new Date("September 1, 2025 00:00:00").getTime();
+
+setInterval(function(){
+
+let teraz = new Date().getTime();
+let tryb = document.getElementById("tryb").value;
+
+let cel;
+
+if(tryb === "wakacje"){
+    cel = new Date("June 26, 2026 00:00:00").getTime();
+} else {
+    cel = Number(document.getElementById("niedziele").value);
 }
 
 let calosc = cel - start;
