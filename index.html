@@ -2,7 +2,8 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<title>Odliczanie do wakacji</title>
+<title>Odliczanie</title>
+
 <style>
 body{
     font-family: Arial;
@@ -16,48 +17,78 @@ body{
 
 #percent{
     font-size:35px;
+    margin-top:10px;
 }
 </style>
+
 </head>
 <body>
 
-<h1>Odliczanie do wakacji</h1>
+<h1>Odliczanie</h1>
+
+<select id="tryb">
+    <option value="wakacje">Wakacje</option>
+    <option value="komunia">Komunia</option>
+</select>
+
+<br><br>
+
+<input type="date" id="dataKomunii">
 
 <div id="countdown"></div>
 <div id="percent"></div>
 
 <script>
+
 let start = new Date("September 1, 2025 00:00:00").getTime();
-let wakacje = new Date("June 26, 2026 00:00:00").getTime();
 
 setInterval(function(){
-    let teraz = new Date().getTime();
-    let calosc = wakacje - start;
-    let zostalo = wakacje - teraz;
 
-    if(zostalo <= 0){
-        // Po dojściu do wakacji pokazujemy tylko napis
-        document.getElementById("countdown").innerHTML = "🌴 SĄ WAKACJE! 🌞";
+let teraz = new Date().getTime();
+let tryb = document.getElementById("tryb").value;
+
+let cel;
+
+if(tryb === "wakacje"){
+    cel = new Date("June 26, 2026 00:00:00").getTime();
+} else {
+    let wybrana = document.getElementById("dataKomunii").value;
+
+    if(!wybrana){
+        document.getElementById("countdown").innerHTML = "Wybierz datę komunii";
         document.getElementById("percent").innerHTML = "";
         return;
     }
 
-    // Liczenie dni, godzin, minut i sekund
-    let dni = Math.floor(zostalo / (1000*60*60*24));
-    let godziny = Math.floor((zostalo % (1000*60*60*24)) / (1000*60*60));
-    let minuty = Math.floor((zostalo % (1000*60*60)) / (1000*60));
-    let sekundy = Math.floor((zostalo % (1000*60)) / 1000);
+    cel = new Date(wybrana).getTime();
+}
 
+let calosc = cel - start;
+let zostalo = cel - teraz;
+
+if(zostalo <= 0){
     document.getElementById("countdown").innerHTML =
-        dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
+        (tryb === "wakacje") ? "🌴 SĄ WAKACJE! 🌞" : "⛪ KOMUNIA! ✨";
+    document.getElementById("percent").innerHTML = "";
+    return;
+}
 
-    // Dokładny procent do wakacji
-    let procent = (zostalo / calosc) * 100;
+let dni = Math.floor(zostalo / (1000*60*60*24));
+let godziny = Math.floor((zostalo % (1000*60*60*24)) / (1000*60*60));
+let minuty = Math.floor((zostalo % (1000*60*60)) / (1000*60));
+let sekundy = Math.floor((zostalo % (1000*60)) / 1000);
 
-    document.getElementById("percent").innerHTML =
-        "Do wakacji: " + procent.toFixed(4) + "%";
+document.getElementById("countdown").innerHTML =
+dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
+
+let procent = (zostalo / calosc) * 100;
+
+document.getElementById("percent").innerHTML =
+(tryb === "wakacje" ? "Do wakacji: " : "Do komunii: ") +
+procent.toFixed(4) + "%";
 
 },1000);
+
 </script>
 
 </body>
