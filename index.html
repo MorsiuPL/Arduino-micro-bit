@@ -178,7 +178,7 @@ let zostalo = cel - teraz;
 
 if(zostalo <= 0){
     document.getElementById("countdown").innerHTML =
-        (tryb === "wakacje") ? "🌴 SĄ WAKACJE! 🌞" : "⛪ KOMUNIA! ✨";
+        (tryb === "wakacje") ? "🌴 SĄ WAKACJE! 🌞" : "⛪ JEST KOMUNIA! ✨";
     document.getElementById("percent").innerHTML = "";
     return;
 }
@@ -194,7 +194,7 @@ dni + " dni " + godziny + " godz " + minuty + " min " + sekundy + " s";
 let procent = (zostalo / calosc) * 100;
 
 document.getElementById("percent").innerHTML =
-(tryb === "wakacje" ? "Do wakacji: " : "Do komunii: ") +
+(tryb === "wakacje" ? "Do wakacji: " : "Do komunii(licząc od poczzątku roku szkolnego): ") +
 procent.toFixed(4) + "%";
 
 },1000);
