@@ -210,12 +210,15 @@ function renderPosts() {
             }
         });
 
+        // OBSŁUGA LINKÓW ODDZIELANYCH PRZECINKIEM
         let linksHTML = "";
-        if (post.links && post.links.length > 0) {
+        if (post.links) {
+            const links = post.links.split(",").map(l => l.trim());
+
             linksHTML = "<h4>Linki:</h4><ul>";
-            for (let link of post.links) {
+            links.forEach(link => {
                 linksHTML += `<li><a href="${link}" target="_blank">${link}</a></li>`;
-            }
+            });
             linksHTML += "</ul>";
         }
 
