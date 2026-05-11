@@ -17,14 +17,14 @@
         "title": "informacja",
         "content": "do wykonania eksperymentów polecam kupić Zestaw FORBOT Mistrz Arduino",
         "image": "zestaw-forbot-mistrz-arduino-z-mikrokontrolerem-plytka-stykowa-przewodami-czujnikami-i-akcesoriami-materialy-edukacyjne.png",
-        "links": [],
+        "links": "https://botland.com.pl/zestawy-i-kursy-forbot/12693-zestaw-forbot-mistrz-arduino-z-mikrokontrolerem-plytka-stykowa-przewodami-czujnikami-i-akcesoriami-materialy-edukacyjne-5904422372378.html",
         "date": "2026-05-11 11:45"
     },
   {
         "title": "pierwszy projekt micro:bit",
         "content": "dzisiaj pokaze wam pierwszą grę na micro:bit",
         "image": "https://www.youtube.com/watch?v=2VMJhu3cR-Y",
-        "links": [],
+        "links": "https://makecode.microbit.org/S99031-52218-37641-30081",
         "date": "2026-05-11 12:47"
     } 
 ]
