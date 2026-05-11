@@ -152,7 +152,7 @@ function renderPosts() {
 
     for (let post of posts) {
 
-        // OBSŁUGA WIELU MEDIÓW (OBRAZKI + WIDEO)
+        // OBSŁUGA WIELU MEDIÓW (OBRAZKI + WIDEO + YT)
         let media = [];
         if (post.image) {
             media = post.image.split(",").map(i => i.trim());
@@ -161,11 +161,15 @@ function renderPosts() {
         let mediaHTML = "";
         media.forEach((item, index) => {
 
-            // YouTube → iframe
+            // YouTube + Shorts
             if (item.includes("youtube.com") || item.includes("youtu.be")) {
+
                 let videoId = item
                     .replace("https://www.youtube.com/watch?v=", "")
                     .replace("https://youtu.be/", "")
+                    .replace("https://youtube.com/shorts/", "")
+                    .replace("https://www.youtube.com/shorts/", "")
+                    .split("?")[0]
                     .trim();
 
                 mediaHTML += `
@@ -182,7 +186,7 @@ function renderPosts() {
                 `;
             }
 
-            // plik wideo → <video controls>
+            // plik wideo
             else if (item.endsWith(".mp4") || item.endsWith(".webm") || item.endsWith(".ogg")) {
                 mediaHTML += `
                     <video 
@@ -274,4 +278,3 @@ document.getElementById("sort").addEventListener("change", renderPosts);
 
 </body>
 </html>
-
