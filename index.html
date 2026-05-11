@@ -151,6 +151,18 @@ function renderPosts() {
     document.getElementById("posts").innerHTML = "";
 
     for (let post of posts) {
+
+        // OBSŁUGA WIELU OBRAZKÓW
+        let images = [];
+        if (post.image) {
+            images = post.image.split(",").map(i => i.trim());
+        }
+
+        let imagesHTML = "";
+        images.forEach((img, index) => {
+            imagesHTML += `<img id="img-${post.title}-${index}" class="hidden-img" src="${img}">`;
+        });
+
         let linksHTML = "";
         if (post.links && post.links.length > 0) {
             linksHTML = "<h4>Linki:</h4><ul>";
@@ -170,9 +182,9 @@ function renderPosts() {
                 <h3>${post.title}</h3>
 
                 <p id="content-${postId}" class="content-short">${post.content}</p>
-                <div class="expand-btn" onclick="toggleContent('${postId}')">Rozwiń</div>
+                <div class="expand-btn" onclick="toggleContent('${postId}', '${post.title}')">Rozwiń</div>
 
-                ${post.image ? `<img id="img-${postId}" class="hidden-img" src="${post.image}">` : ""}
+                ${imagesHTML}
                 ${linksHTML}
             </div>
         `;
@@ -180,21 +192,25 @@ function renderPosts() {
 }
 
 // =========================
-// ROZWIJANIE POSTÓW + OBRAZEK
+// ROZWIJANIE POSTÓW + OBRAZKI
 // =========================
-function toggleContent(id) {
+function toggleContent(id, title) {
     const el = document.getElementById("content-" + id);
     const btn = el.nextElementSibling;
-    const img = document.getElementById("img-" + id);
+
+    const imgs = document.querySelectorAll(`img[id^="img-${title}"]`);
 
     if (el.classList.contains("content-short")) {
         el.classList.remove("content-short");
         btn.textContent = "Zwiń";
-        if (img) img.classList.remove("hidden-img");
+
+        imgs.forEach(img => img.classList.remove("hidden-img"));
+
     } else {
         el.classList.add("content-short");
         btn.textContent = "Rozwiń";
-        if (img) img.classList.add("hidden-img");
+
+        imgs.forEach(img => img.classList.add("hidden-img"));
     }
 }
 
@@ -215,4 +231,3 @@ document.getElementById("sort").addEventListener("change", renderPosts);
 
 </body>
 </html>
-
