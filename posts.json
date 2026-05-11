@@ -3,14 +3,14 @@
         "title": "Witaj na mojej stronie!",
         "content": "Hej, to jest moja nowa strona z informacjami dotyczącymi Arduino i micro:bit. Będę tutaj dodawał projekty, zdjęcia, linki i różne ciekawostki. Zapraszam do oglądania!",
         "image": "20260510_220916.jpg",
-        "links": [],
+        "links": "",
         "date": "2026-05-10 22:01"
     },
    {
         "title": "pierwszy projekt",
         "content": "siema to jest moj pierwszy projekt na tej stronie z zapalaniem i gaszeniem diody led z użyciem histerezy  ",
         "image": "20260511_100033.jpg, Zrzut ekranu 2026-05-11 104735.png, Zrzut ekranu 2026-05-11 104728.png, https://youtu.be/W8ujV7nD66A, https://youtu.be/Z1WdxB04F9A",
-        "links": [],
+        "links": "",
         "date": "2026-05-11 10:05"
     },
   {
