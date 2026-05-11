@@ -26,6 +26,10 @@
             margin-top: 10px;
         }
 
+        .hidden-img {
+            display: none;
+        }
+
         .date {
             color: gray;
             font-size: 14px;
@@ -94,7 +98,6 @@ function timeAgo(dateString) {
     const months  = Math.floor(days / 30);
     const years   = Math.floor(days / 365);
 
-    // poprawna odmiana PL
     const plural = (value, forms) => {
         if (value === 1) return forms[0];
         if (value >= 2 && value <= 4) return forms[1];
@@ -135,19 +138,16 @@ function renderPosts() {
 
     let posts = [...allPosts];
 
-    // FILTROWANIE
     posts = posts.filter(p =>
         p.title.toLowerCase().includes(search) ||
         p.content.toLowerCase().includes(search)
     );
 
-    // SORTOWANIE
     if (sort === "newest") posts.sort((a,b) => new Date(b.date) - new Date(a.date));
     if (sort === "oldest") posts.sort((a,b) => new Date(a.date) - new Date(b.date));
     if (sort === "az") posts.sort((a,b) => a.title.localeCompare(b.title));
     if (sort === "za") posts.sort((a,b) => b.title.localeCompare(a.title));
 
-    // RENDEROWANIE
     document.getElementById("posts").innerHTML = "";
 
     for (let post of posts) {
@@ -172,7 +172,7 @@ function renderPosts() {
                 <p id="content-${postId}" class="content-short">${post.content}</p>
                 <div class="expand-btn" onclick="toggleContent('${postId}')">Rozwiń</div>
 
-                ${post.image ? `<img src="${post.image}">` : ""}
+                ${post.image ? `<img id="img-${postId}" class="hidden-img" src="${post.image}">` : ""}
                 ${linksHTML}
             </div>
         `;
@@ -180,18 +180,21 @@ function renderPosts() {
 }
 
 // =========================
-// ROZWIJANIE POSTÓW
+// ROZWIJANIE POSTÓW + OBRAZEK
 // =========================
 function toggleContent(id) {
     const el = document.getElementById("content-" + id);
     const btn = el.nextElementSibling;
+    const img = document.getElementById("img-" + id);
 
     if (el.classList.contains("content-short")) {
         el.classList.remove("content-short");
         btn.textContent = "Zwiń";
+        if (img) img.classList.remove("hidden-img");
     } else {
         el.classList.add("content-short");
         btn.textContent = "Rozwiń";
+        if (img) img.classList.add("hidden-img");
     }
 }
 
@@ -206,12 +209,10 @@ async function loadPosts() {
 
 loadPosts();
 
-// =========================
-// EVENTY
-// =========================
 document.getElementById("search").addEventListener("input", renderPosts);
 document.getElementById("sort").addEventListener("change", renderPosts);
 </script>
 
 </body>
 </html>
+
