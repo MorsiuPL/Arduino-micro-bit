@@ -47,5 +47,13 @@
         "image": "",
         "links": "",
         "date": "2026-05-31 13:25"
+    },
+      {
+        "title": "informacja",
+        "content": "zaprzaszam do programu AVRDUDE Calculator",
+        "image": "Zrzut ekranu 2026-08-14 121513.png",
+        "links": "https://morsiupl.github.io/AVRDUDE-Calculator/, avrdudecalculator.pl",
+        "date": "2026-08-14 12:22"
     } 
+
 ]
